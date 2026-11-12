@@ -25,10 +25,9 @@ jobs:
         run: |
           sudo apt-get install -y --fix-missing git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev
 
-      - name: Install Buildozer and jnius
+      - name: Install Buildozer
         run: |
           pip install buildozer
-          pip install "jnius>=1.4.0"
 
       - name: Build APK with Buildozer
         run: buildozer -v android debug
