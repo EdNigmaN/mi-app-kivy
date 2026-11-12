@@ -17,10 +17,13 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install system dependencies
+      - name: Update apt packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get install -y --fix-missing git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev
 
       - name: Install Buildozer and jnius
         run: |
