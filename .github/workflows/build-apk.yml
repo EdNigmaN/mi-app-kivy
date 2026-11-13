@@ -7,12 +7,18 @@ on:
 
 jobs:
   build:
-    # Usar Ubuntu 22.04 es CLAVE para evitar problemas con el NDK y glibc
+    # Usar Ubuntu 22.04 para evitar problemas de compatibilidad con glibc
     runs-on: ubuntu-22.04
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Set up Python
         uses: actions/setup-python@v5
