@@ -119,7 +119,8 @@ fullscreen = 0
 # android.skip_update = False
 
 # (bool) If True, then automatically accept SDK license
-# android.accept_sdk_license = False
+# agreements. This is intended for automation only.
+android.accept_sdk_license = True
 
 # (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.kivy.android.PythonActivity
