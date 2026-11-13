@@ -7,7 +7,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    # Usar Ubuntu 22.04 es CLAVE para evitar problemas con el NDK y glibc
+    runs-on: ubuntu-22.04
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,30 +20,28 @@ jobs:
           python-version: '3.9'
 
       - name: Update apt packages
-        run: |
-          sudo apt-get update
+        run: sudo apt-get update
 
       - name: Install system dependencies
         run: |
-          sudo apt-get install -y --fix-missing git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev
+          sudo apt-get install -y --fix-missing git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev aidl
 
-      - name: Install Buildozer
+      - name: Install Buildozer and Cython
         run: |
           pip install buildozer
+          pip install "cython==0.29.33"
 
       - name: Accept Android SDK licenses
         run: |
           export ANDROID_SDK_ROOT=$ANDROID_HOME
           mkdir -p $ANDROID_SDK_ROOT/licenses
-          # Forzar la aceptación interactiva
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses || true
-          # Crear los archivos de licencia por si acaso
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
           echo -e "\n8933bad161af4b6a5b573652ffc7aaf3aee85a47" > $ANDROID_SDK_ROOT/licenses/android-sdk-license
           echo -e "\nd56f5187479451eabf01fb78af6dfcb131b33910" > $ANDROID_SDK_ROOT/licenses/android-sdk-preview-license
           echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_SDK_ROOT/licenses/google-tv-preview-license
 
       - name: Build APK with Buildozer
-        run: buildozer -v android debug
+        run: echo y | buildozer -v android debug
 
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
